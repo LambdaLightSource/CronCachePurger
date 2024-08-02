@@ -3,14 +3,15 @@ kind: CronJob
 metadata:
   name: cache-purger
 spec:
-  schedule: "0 0 * * *"
+  schedule: "0 * * * *" 
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: cleanup
-            image: thumbor-deployment-7f4f4f9466-vr7zc
+            image: gcr.io/diamond-privreg/image-service/dls-thumbor-extension:latest
+            imagePullPolicy: IfNotPresent
             command: ["/bin/sh", "-c"]
             args: ["find /data/thumbor/storage -type f -mtime +7 -atime +1 -exec rm -rf {} \\;"]
             volumeMounts:
